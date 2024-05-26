@@ -1,6 +1,4 @@
-// _SideMenuGroup.jsx
-
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -20,7 +18,7 @@ import { grey } from '@mui/material/colors';
 import { useSideMenuState, useSideMenuStateUpdate, useSideMenuBadge } from './_SMenuHooks';
 import SMenuSubItem from './_SideMenuSubItem';
 
-function IconItem ({ open, icon, title }) {
+function IconItem({ open, icon, title }) {
     return (
         <ListItemIcon
             sx={{
@@ -53,7 +51,7 @@ function IconItem ({ open, icon, title }) {
                     <SvgIcon component={icon} />
             }
         </ListItemIcon>
-    )
+    );
 }
 
 /**
@@ -62,60 +60,67 @@ function IconItem ({ open, icon, title }) {
  * @returns
  */
 function SideMenuGroup({
-                           id, //菜单项的ID名称
-                           icon = null, //图标
-                           title, //标题
-                           childrenData, //子菜单
-                           onClick, //单击事件
-                       }) {
-    const { hoverItemId, open } = useSideMenuState();
+    id, //菜单项的ID名称
+    icon = null, //图标
+    title, //标题
+    childrenData, //子菜单
+    onClick, //单击事件
+    defaultExpanded = true, // 新增的默认展开参数
+}) {
+    const { hoverItemId } = useSideMenuState();
     const updateMenuState = useSideMenuStateUpdate();
     const badgeCount = useSideMenuBadge();
     const groupBadgeNumber = childrenData.map((item) => badgeCount[item.id]).reduce((a, b) => a + b, 0);
+
+    // Local state to control expansion
+    const [isExpanded, setIsExpanded] = useState(defaultExpanded);
+
     const handleClick = () => {
-        updateMenuState({hoverItemId: hoverItemId === id ? null : id})
+        setIsExpanded(!isExpanded);
+        if (!isExpanded) {
+            updateMenuState({ hoverItemId: id });
+        } else {
+            updateMenuState({ hoverItemId: null });
+        }
     };
 
     return (
         <Box>
             <ListItemButton onClick={handleClick}>
-                <Tooltip title={open ? null : title} arrow placement="right">
+                <Tooltip title={isExpanded ? null : title} arrow placement="right">
                     <Badge
-                        badgeContent={open ? 0 : hoverItemId === id ? 0 : groupBadgeNumber}
+                        badgeContent={isExpanded ? 0 : groupBadgeNumber}
                         anchorOrigin={{
                             vertical: 'top',
                             horizontal: 'left',
                         }}
-                        // variant="dot"
                         color="error">
-                        <IconItem open={open} icon={icon} title={title} />
+                        <IconItem open={isExpanded} icon={icon} title={title} />
                     </Badge>
                 </Tooltip>
 
                 <Stack direction={"row"} justifyContent={"space-between"} sx={{ width: 300 }}>
-                    <StyledBadge badgeContent={ hoverItemId === id ? null : groupBadgeNumber } color="error">
+                    <StyledBadge badgeContent={isExpanded ? null : groupBadgeNumber} color="error">
                         <ListItemText primary={title} />
                     </StyledBadge>
 
-                    {hoverItemId === id ? <ExpandLess /> : <ExpandMore />}
+                    {isExpanded ? <ExpandLess /> : <ExpandMore />}
                 </Stack>
-
             </ListItemButton>
-            <Collapse in={ hoverItemId === id } timeout="auto" unmountOnExit>
+
+            <Collapse in={isExpanded} timeout="auto" unmountOnExit>
                 <List component="div" dense={true} disablePadding>
-                    {
-                        childrenData === undefined ? null :
-                            childrenData.map(function (itemData, index) {
-                                return <SMenuSubItem
-                                    icon = { itemData.icon }
-                                    title = { itemData.title }
-                                    id = {itemData.id}
-                                    groupId = {id}
-                                    groupTitle={title}
-                                    onClick={onClick}
-                                    key={index} />
-                            })
-                    }
+                    {childrenData && childrenData.map((itemData, index) => (
+                        <SMenuSubItem
+                            icon={itemData.icon}
+                            title={itemData.title}
+                            id={itemData.id}
+                            groupId={id}
+                            groupTitle={title}
+                            onClick={onClick}
+                            key={index}
+                        />
+                    ))}
                 </List>
             </Collapse>
         </Box>
