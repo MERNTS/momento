@@ -5,13 +5,7 @@ import Divider from '@mui/material/Divider';
 import { List } from '@mui/material';
 import RightHeader from "@/menu/_RightHeader.jsx";
 
-function FnRight({
-                        title,
-                        logo,
-                        hClick,
-                        mClick,
-                        footer,
-                    }) {
+function FnRight({title,logo,hClick,mClick,footer,}) {
     const openWidth = 300;
     const minWidth = 65;
     const open = true; // Placeholder for menu state
@@ -23,7 +17,7 @@ function FnRight({
             sx={{
                 transition: "width 0.3s",
                 width: open ? openWidth : minWidth,
-                borderRight: 1,
+                borderLeft: 1,
                 borderColor: "divider",
             }}
         >
@@ -34,20 +28,6 @@ function FnRight({
                     onClick={hClick}
 
                 />
-
-                <Box
-                    sx={{
-                        padding: 2,
-                        borderBottom: 1,
-                        borderColor: "divider",
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                    }}
-                >
-                    <span>Placeholder Title</span>
-                    <span>Placeholder Logo</span>
-                </Box>
 
                 <Box
                     sx={{

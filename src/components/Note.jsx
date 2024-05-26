@@ -1,4 +1,3 @@
-// Note.jsx
 import { useState, useEffect, useRef } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -41,7 +40,7 @@ function Note() {
     };
 
     return (
-        <Box sx={{ display: 'flex', flexDirection: 'column', height: '90%' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
             <List ref={listRef} sx={{ flexGrow: 1, overflowY: 'auto', padding: 2 }}>
                 {messages.map((message, index) => (
                     <ListItem key={index} sx={{ justifyContent: 'flex-start' }}>
@@ -54,7 +53,6 @@ function Note() {
                                 padding: 1,
                                 marginBottom: 0,
                                 marginTop: 0,
-                                marginBlock:0,
                                 maxWidth: '100%',
                                 alignSelf: 'flex-end',
                             }}
@@ -62,14 +60,24 @@ function Note() {
                     </ListItem>
                 ))}
             </List>
-            <Box sx={{ display: 'flex', alignItems: 'center', padding: 2, borderTop: '1px solid #ccc' }}>
+            <Box
+                sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    padding: 2,
+                    borderTop: '1px solid #ccc',
+                    position: 'sticky',
+                    bottom: 0,
+                    backgroundColor: 'white', // Ensure the background color matches the design
+                }}
+            >
                 <TextField
                     variant="outlined"
                     fullWidth
                     value={inputValue}
                     onChange={handleInputChange}
                     placeholder="Type your message..."
-                    sx={{ marginRight: 1, flex: 1 }} // Adjust spacing and width
+                    sx={{ marginRight: 1, flex: 1 }}
                 />
                 <Button variant="contained" color="primary" onClick={handleSend}>
                     Send
