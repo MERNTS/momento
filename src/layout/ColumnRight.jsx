@@ -6,7 +6,7 @@ import { List } from '@mui/material';
 import RightHeader from "@/menu/_RightHeader.jsx";
 
 function FnRight({title,logo,hClick,mClick,footer,}) {
-    const openWidth = 300;
+    const openWidth = 450;
     const minWidth = 65;
     const open = true; // Placeholder for menu state
 

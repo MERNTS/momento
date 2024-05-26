@@ -47,6 +47,12 @@ function SideMenuSubItem({
             sx={{
                 transition: "padding 0.3s",
                 pl: open ? 5 : 2.5,
+
+                py: 0, // Adjust vertical padding
+                // px: 4, // Adjust horizontal padding (increase to create more indentation)
+                mb: 0, // Adjust bottom margin
+                // width: '120%',  // Reduce the width of the sub-menu item
+
             }}>
             <CssBaseline />
             <Tooltip title={open ? null : title} arrow placement="right">

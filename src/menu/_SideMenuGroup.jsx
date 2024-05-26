@@ -32,6 +32,9 @@ function IconItem({ open, icon, title }) {
                         transform: open ? 'scale(1)' : 'scale(1.3)',
                     }
                 },
+                // px: 0, // Remove horizontal padding
+                // mb: 0, // Remove bottom margin
+                // pl: 2, // Adjust the left padding (indentation)
             }}>
             {
                 icon == null ?
@@ -86,7 +89,12 @@ function SideMenuGroup({
 
     return (
         <Box>
-            <ListItemButton onClick={handleClick}>
+            <ListItemButton onClick={handleClick}
+                            sx={{
+                                py: 0, // Adjust vertical padding
+                                // px: 0, // Adjust horizontal padding
+                                mb: 0, // Adjust bottom margin
+                            }}>
                 <Tooltip title={isExpanded ? null : title} arrow placement="right">
                     <Badge
                         badgeContent={isExpanded ? 0 : groupBadgeNumber}
@@ -108,7 +116,12 @@ function SideMenuGroup({
                 </Stack>
             </ListItemButton>
 
-            <Collapse in={isExpanded} timeout="auto" unmountOnExit>
+            <Collapse in={isExpanded} timeout="auto" unmountOnExit
+                      sx={{
+                          // mt: 0, // Adjust top margin
+                          // mb: 0, // Adjust bottom margin
+                      }}
+            >
                 <List component="div" dense={true} disablePadding>
                     {childrenData && childrenData.map((itemData, index) => (
                         <SMenuSubItem
