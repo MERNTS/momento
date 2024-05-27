@@ -17,21 +17,12 @@ function Layout_() {
 
     return (
         <PageTemplate_
-            sideMenu={<MMLeft
-                title="Momento"
-                logo="./src/assets/momento.png"
+            sideMenu={<MMLeft   title="Momento" logo="./src/assets/momento.png"
                 hClick={() => { console.log("headerOnClick") }}
-                mClick={onClickHandler} />
-            }
+                mClick={onClickHandler} />}
 
             pageHeader={
-                <Stack
-                    direction="row"
-                    justifyContent="space-between"
-                    alignItems="center"
-                    spacing={2}
-                    className='w-100'
-                >
+                <Stack  direction="row" justifyContent="space-between"  alignItems="center" spacing={2} className='w-100'>
                     <SToggleButton icon={<VerticalSplitIcon />} />
                     <ToggleThemeButton />
                 </Stack>

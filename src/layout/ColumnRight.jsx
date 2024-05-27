@@ -4,6 +4,8 @@ import Box from '@mui/system/Box';
 import Divider from '@mui/material/Divider';
 import { List } from '@mui/material';
 import RightHeader from "@/menu/_RightHeader.jsx";
+import Note from "@/components/Note.jsx";
+import ChatBot from "@/components/ChatBot.jsx";
 
 function FnRight({title,logo,hClick,mClick,footer,}) {
     const openWidth = 450;
@@ -37,17 +39,18 @@ function FnRight({title,logo,hClick,mClick,footer,}) {
                         width: open ? openWidth : minWidth,
                     }}
                 >
-                    <List sx={{ width: openWidth }}>
-                        <div>Placeholder Content Item 1</div>
-                        <div>Placeholder Content Item 2</div>
-                        <div>Placeholder Content Item 3</div>
-                    </List>
+                    {<ChatBot />}
+                    {/*<List sx={{ width: openWidth }}>*/}
+                    {/*    <div>Placeholder Content Item 1</div>*/}
+                    {/*    <div>Placeholder Content Item 2</div>*/}
+                    {/*    <div>Placeholder Content Item 3</div>*/}
+                    {/*</List>*/}
                 </Box>
 
-                <Divider />
-                <Box sx={{ padding: 2 }}>
-                    Placeholder Footer
-                </Box>
+                {/*<Divider />*/}
+                {/*<Box sx={{ padding: 2 }}>*/}
+                {/*    Placeholder Footer*/}
+                {/*</Box>*/}
             </Box>
         </Box>
     );

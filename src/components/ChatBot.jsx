@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -6,7 +6,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 
-function Note() {
+function ChatBot() {
     const [messages, setMessages] = useState([]);
     const [inputValue, setInputValue] = useState('');
     const listRef = useRef(null);
@@ -27,33 +27,58 @@ function Note() {
         setInputValue(event.target.value);
     };
 
-    const handleSend = () => {
+    const handleSend = async () => {
         if (inputValue.trim() !== '') {
+            const userMessage = inputValue;
             const newMessage = {
-                text: inputValue,
+                text: userMessage,
                 timestamp: new Date().toLocaleTimeString(),
                 sender: 'user', // Only user messages
             };
             setMessages([...messages, newMessage]);
             setInputValue('');
+
+            try {
+                const response = await sendMessageToAI(userMessage);
+                const aiMessage = response.data.choices[0].text.trim();
+                const aiResponse = {
+                    text: aiMessage,
+                    timestamp: new Date().toLocaleTimeString(),
+                    sender: 'AI',
+                };
+                setMessages([...messages, aiResponse]);
+            } catch (error) {
+                console.error('Error communicating with OpenAI API:', error);
+            }
         }
+    };
+
+    const sendMessageToAI = async (message) => {
+        const response = await fetch('/api/openai', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ message }),
+        });
+        return response.json();
     };
 
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
             <List ref={listRef} sx={{ flexGrow: 1, overflowY: 'auto', padding: 2 }}>
                 {messages.map((message, index) => (
-                    <ListItem key={index} sx={{ justifyContent: 'flex-start' }}>
+                    <ListItem key={index} sx={{ justifyContent: message.sender === 'user' ? 'flex-end' : 'flex-start' }}>
                         <ListItemText
                             primary={message.text}
                             secondary={message.timestamp}
                             sx={{
-                                backgroundColor: '#F7F7FF',
+                                backgroundColor: message.sender === 'user' ? '#F7F7FF' : '#E0E0E0',
                                 borderRadius: 2,
                                 padding: 1,
-                                marginBottom: 0,
-                                marginTop: 0,
-                                maxWidth: '100%',
+                                marginBottom: 1,
+                                marginTop: 1,
+                                maxWidth: '80%',
                                 alignSelf: 'flex-end',
                             }}
                         />
@@ -68,7 +93,7 @@ function Note() {
                     borderTop: '1px solid #ccc',
                     position: 'sticky',
                     bottom: 0,
-                    backgroundColor: 'white', // Ensure the background color matches the design
+                    backgroundColor: 'white',
                 }}
             >
                 <TextField
@@ -87,4 +112,4 @@ function Note() {
     );
 }
 
-export default Note;
+export default ChatBot;
